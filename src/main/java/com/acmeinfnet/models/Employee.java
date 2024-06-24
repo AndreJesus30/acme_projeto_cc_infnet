@@ -13,19 +13,19 @@ public abstract class Employee {
     protected BigDecimal remuneration;
     private DepartmentEnum department;
     private ResponsibilityEnum responsibility;
+    private int yearsOfService;
     
-
     public Employee(String name, List<String> phones, String address, BigDecimal remuneration,
-            DepartmentEnum department, ResponsibilityEnum responsibility) {
+            DepartmentEnum department, ResponsibilityEnum responsibility, int yearsOfService) {
         this.name = name;
         this.phones = phones;
         this.address = address;
         this.remuneration = remuneration;
         this.department = department;
         this.responsibility = responsibility;
+        this.yearsOfService = yearsOfService;
     }
 
-    
     public String getName() {
         return name;
     }
@@ -61,6 +61,14 @@ public abstract class Employee {
     }
     public void setResponsibility(ResponsibilityEnum responsibility) {
         this.responsibility = responsibility;
+    }
+
+    public int getYearsOfService() {
+        return yearsOfService;
+    }
+
+    public void setYearsOfService(int yearsOfService) {
+        this.yearsOfService = yearsOfService;
     }
 
     public String toString() {

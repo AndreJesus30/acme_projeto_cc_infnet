@@ -2,57 +2,133 @@ package com.acmeinfnet;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.acmeinfnet.decorators.ThreeYearGratificationDecorator;
+import com.acmeinfnet.decorators.implemented.FiveYearGratificationDecorator;
+import com.acmeinfnet.decorators.implemented.OneYearGratificationDecorator;
 import com.acmeinfnet.enums.DepartmentEnum;
 import com.acmeinfnet.enums.ResponsibilityEnum;
 import com.acmeinfnet.models.EmployeeInternal;
-import com.acmeinfnet.models.EmployeeOutsourced;
+import com.acmeinfnet.strategy.GratificationNotifyStrategy;
+import com.acmeinfnet.strategy.implemented.FiveGratificationNotifyStrategy;
+import com.acmeinfnet.strategy.implemented.OneGratificationNotifyStrategy;
+import com.acmeinfnet.strategy.implemented.ThreeGratificationNotifyStrategy;
+
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("===================");
-        System.out.println("Employee Internal");
 
-        List<String> listPhonesEmployee1 = new ArrayList<String>(); 
-        listPhonesEmployee1.add("62 99999-9999");
-        listPhonesEmployee1.add("62 98888-8888");
+        List<EmployeeInternal> listEmployeeInternal = new ArrayList<EmployeeInternal>();
 
         EmployeeInternal employee1 = new EmployeeInternal(
             "João", 
-            listPhonesEmployee1,
+            List.of("62 99999-9999", "62 98888-8888"),
             "Rua 2 Q 6", BigDecimal.valueOf(5000), 
             DepartmentEnum.DATABASE, 
-            ResponsibilityEnum.MID
+            ResponsibilityEnum.MID,
+            1
             );
 
-        System.out.println(employee1.toString());
-
-        System.out.println("salário inicial: " + employee1.getRemuneration());
-
-        employee1.remunerationAdjustment(BigDecimal.valueOf(22.0F));
-        // employee1.remunerationAdjustment(BigDecimal.valueOf(60.0F)); // gera exception
-
-        System.out.println("salário após reajuste: " + employee1.getRemuneration());
-
-
-
-        System.out.println("===================");
-        System.out.println("Employee Outsourced");
-
-        List<String> listPhonesEmployee2 = new ArrayList<String>(); 
-        listPhonesEmployee2.add("62 99999-9999");
-        listPhonesEmployee2.add("62 98888-8888");
-
-        EmployeeOutsourced employee2 = new EmployeeOutsourced(
+        EmployeeInternal employee2 = new EmployeeInternal(
             "Maria", 
-            listPhonesEmployee2,
-            "Rua 2 Q 6", BigDecimal.valueOf(3000), 
-            DepartmentEnum.DEVELOPMENT, 
-            ResponsibilityEnum.INTERN,
-            "Company X"
+            List.of("61 90997-9877"),
+            "Rua 2 Q 6", BigDecimal.valueOf(5000), 
+            DepartmentEnum.DATABASE, 
+            ResponsibilityEnum.MID,
+            3
             );
 
-        System.out.println(employee2.toString());
+        EmployeeInternal employee3 = new EmployeeInternal(
+            "George", 
+            List.of("64 90997-4567"),
+            "Rua 2 Q 6", BigDecimal.valueOf(5000), 
+            DepartmentEnum.DATABASE, 
+            ResponsibilityEnum.MID,
+            0
+            );
 
+        EmployeeInternal employee4 = new EmployeeInternal(
+            "Carla", 
+            List.of("63 94653-2345"),
+            "Rua 2 Q 6", BigDecimal.valueOf(5000), 
+            DepartmentEnum.DATABASE, 
+            ResponsibilityEnum.MID,
+            7
+            );
+
+        listEmployeeInternal.add(employee1);
+        listEmployeeInternal.add(employee2);
+        listEmployeeInternal.add(employee3);
+        listEmployeeInternal.add(employee4);
+
+        
+       //PATTERN DECORATOR
+
+       List<EmployeeInternal> listEmployeeInternalGratification = listEmployeeInternal.stream().map((e) -> {
+
+                if(isYearsMoreThenOneAndLessThree(e)) {
+                    e = new OneYearGratificationDecorator(e);
+                }
+
+                if(isYearsMoreThenThreeAndLessFive(e)) {
+                    e = new ThreeYearGratificationDecorator(e);
+                }
+
+                if(isYearsMoreThenFive(e)) {
+                    e = new FiveYearGratificationDecorator(e);
+                }
+
+                return e;
+            }
+        ).toList();
+
+        listEmployeeInternalGratification.forEach((e) -> System.out.println(e.getName() +" "+ e.getRemuneration()));
+        //
+
+
+        //PATTERN STRATEGY
+
+        Map<Integer, GratificationNotifyStrategy> mapGratificationStrategy = Map.of(
+            1, new OneGratificationNotifyStrategy(),
+            3, new ThreeGratificationNotifyStrategy(),
+            5, new FiveGratificationNotifyStrategy()
+        );
+    
+        listEmployeeInternal.forEach((e) -> {
+            if(mapGratificationStrategy.containsKey(e.getYearsOfService())) {
+                mapGratificationStrategy.get(e.getYearsOfService()).sendNotifyGratification(e.getName());;
+            }
+        });
+
+        //
+
+    }
+
+
+
+
+    public static boolean isYearsMoreThenOneAndLessThree(EmployeeInternal employee) {
+        if(employee.getYearsOfService() >= 1 && employee.getYearsOfService() < 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isYearsMoreThenThreeAndLessFive(EmployeeInternal employee) {
+        if(employee.getYearsOfService() >= 3 && employee.getYearsOfService() < 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isYearsMoreThenFive(EmployeeInternal employee) {
+        if(employee.getYearsOfService() >= 5) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

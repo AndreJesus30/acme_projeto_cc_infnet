@@ -14,8 +14,8 @@ public class EmployeeOutsourced extends Employee {
     private LocalDate daysOfStay;
 
     public EmployeeOutsourced(String name, List<String> phones, String address, BigDecimal remuneration,
-    DepartmentEnum department, ResponsibilityEnum responsibility, String hiredCompany) {
-        super(name, phones, address, remuneration, department, responsibility);
+    DepartmentEnum department, ResponsibilityEnum responsibility, String hiredCompany, int yearsOfService) {
+        super(name, phones, address, remuneration, department, responsibility, yearsOfService);
         this.hiredCompany = hiredCompany;
         this.daysOfStay = ChronoUnit.DAYS.addTo(LocalDate.now(), 60);
     }

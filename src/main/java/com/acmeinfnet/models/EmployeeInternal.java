@@ -12,8 +12,8 @@ import com.acmeinfnet.exceptions.PercentageIsNotPositiveException;
 public class EmployeeInternal extends Employee {
     
     public EmployeeInternal(String name, List<String> phones, String address, BigDecimal remuneration,
-            DepartmentEnum department, ResponsibilityEnum responsibility) {
-        super(name, phones, address, remuneration, department, responsibility);
+            DepartmentEnum department, ResponsibilityEnum responsibility, int yearsOfService) {
+        super(name, phones, address, remuneration, department, responsibility, yearsOfService);
     }
 
     public void remunerationAdjustment(BigDecimal percentAdded) {
