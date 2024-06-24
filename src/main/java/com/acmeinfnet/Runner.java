@@ -1,6 +1,8 @@
 package com.acmeinfnet;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -15,15 +17,13 @@ import com.acmeinfnet.strategy.implemented.FiveGratificationNotifyStrategy;
 import com.acmeinfnet.strategy.implemented.OneGratificationNotifyStrategy;
 import com.acmeinfnet.strategy.implemented.ThreeGratificationNotifyStrategy;
 
-
-public class Main {
+public class Runner {
     public static void main(String[] args) {
-
-        List<EmployeeInternal> listEmployeeInternal = new ArrayList<EmployeeInternal>();
+          List<EmployeeInternal> listEmployeeInternal = new ArrayList<EmployeeInternal>();
 
         EmployeeInternal employee1 = new EmployeeInternal(
-            "João", 
-            List.of("62 99999-9999", "62 98888-8888"),
+            "Felipe", 
+            new ArrayList<>(Arrays.asList("62 98888-7777", "62 96666-5555")),
             "Rua 2 Q 6", BigDecimal.valueOf(5000), 
             DepartmentEnum.DATABASE, 
             ResponsibilityEnum.MID,
@@ -32,7 +32,7 @@ public class Main {
 
         EmployeeInternal employee2 = new EmployeeInternal(
             "Maria", 
-            List.of("61 90997-9877"),
+            new ArrayList<>(Arrays.asList("63 95555-7777")),
             "Rua 2 Q 6", BigDecimal.valueOf(5000), 
             DepartmentEnum.DATABASE, 
             ResponsibilityEnum.MID,
@@ -41,7 +41,7 @@ public class Main {
 
         EmployeeInternal employee3 = new EmployeeInternal(
             "George", 
-            List.of("64 90997-4567"),
+            new ArrayList<>(Arrays.asList("63 94444-5555")),
             "Rua 2 Q 6", BigDecimal.valueOf(5000), 
             DepartmentEnum.DATABASE, 
             ResponsibilityEnum.MID,
@@ -50,7 +50,7 @@ public class Main {
 
         EmployeeInternal employee4 = new EmployeeInternal(
             "Carla", 
-            List.of("63 94653-2345"),
+            new ArrayList<>(Arrays.asList("63 93333-2222")),
             "Rua 2 Q 6", BigDecimal.valueOf(5000), 
             DepartmentEnum.DATABASE, 
             ResponsibilityEnum.MID,
@@ -102,12 +102,9 @@ public class Main {
         });
 
         //
-
     }
 
-
-
-
+    
     public static boolean isYearsMoreThenOneAndLessThree(EmployeeInternal employee) {
         if(employee.getYearsOfService() >= 1 && employee.getYearsOfService() < 3) {
             return true;
