@@ -1,6 +1,7 @@
 package com.acmeinfnet.models;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.acmeinfnet.enums.DepartmentEnum;
@@ -21,7 +22,7 @@ public class EmployeeOutsourced extends Employee {
             builder.responsibility
         );
         this.hiredCompany = builder.hiredCompany;
-        this.daysOfStay = builder.daysOfStay;
+        this.daysOfStay = ChronoUnit.DAYS.addTo(LocalDate.now(), 60);
     }
 
     public static class Builder {
@@ -32,24 +33,25 @@ public class EmployeeOutsourced extends Employee {
         private DepartmentEnum department;
         private ResponsibilityEnum responsibility;
         private String hiredCompany;
-        private LocalDate daysOfStay;
-
 
         public Builder (String name, String hiredCompany, BigDecimal remuneration) {
             if (name == null || name.isEmpty()) {
                 throw new IllegalArgumentException("Nome não pode ser nulo ou vazio");
+            } else {
+                this.name = name;
             }
-            this.name = name;
 
             if (hiredCompany == null || hiredCompany.isEmpty()) {
                 throw new IllegalArgumentException("Empresa não pode ser nulo ou vazio");
+            } else {
+                this.hiredCompany = hiredCompany;
             }
-            this.hiredCompany = hiredCompany;
 
             if (remuneration == null || remuneration.equals(BigDecimal.ZERO)) {
                 throw new IllegalArgumentException("Remuneração não pode ser nula ou zero");
+            } else {
+                this.remuneration = remuneration; 
             }
-            this.remuneration = remuneration;
         }
 
         public Builder phones(List<String> phones) {
@@ -78,10 +80,9 @@ public class EmployeeOutsourced extends Employee {
 
     }
 
-
     @Override
     public String toString() {
-        return super.toString() + "Outsourced [hiredCompany=" + hiredCompany + ", daysOfStay=" + daysOfStay + "]";
+        return super.toString() + " Outsourced [hiredCompany=" + hiredCompany + ", daysOfStay=" + daysOfStay + "]";
     }
 
 
